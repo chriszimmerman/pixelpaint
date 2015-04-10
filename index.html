@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <head>
 	<title>Pixelpaint</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="./pixelpaint.js"></script>
+	<link rel="stylesheet" type="text/css" href="pixelpaint.css">
 </head>
 <body>
 	<table id="canvas" cellpadding="0" cellspacing="0"></table>
 
 	<div>
 		Color: <input id="colorpicker" type="color"></input>
+		<br>
+		Height: <input id="height" type="number" min="1"> pixels
+		<br>
+		Width: <input id="width" type="number" min="1"> pixels
+		<br>
+		<button id="update">Update</button>
 	</div>
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="./pixelpaint.js"></script>
-	<link rel="stylesheet" type="text/css" href="pixelpaint.css">
 </body>
 </html>
