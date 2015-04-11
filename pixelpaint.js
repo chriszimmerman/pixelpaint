@@ -18,6 +18,7 @@ $(document).ready(function(){
 				$('#' + tableRowId).append('<td><div class="square"></div></td>');            
 			}
 		}
+		$('table td').addClass('grid-on');
 		
 		$('.square').click(function(){
 			var color = $('#colorpicker').val();
@@ -31,6 +32,19 @@ $(document).ready(function(){
     $('#update').click(function(){
 		$('#canvas').empty();
 		createTable();
+	});
+
+	$('#grid').click(function(){
+		if($('table td').is('.grid-on')){
+			$('table td').removeClass('grid-on');
+			$('table td').addClass('grid-off');
+		}
+		else{
+			$('table td').removeClass('grid-off');
+			$('table td').addClass('grid-on');
+			$('table').css('border-collapse', 'collapse');
+			$('table').css('border', '');
+		}
 	});
 
 	createTable();

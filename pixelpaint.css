@@ -9,3 +9,11 @@
     margin: 0;
     float: left;
 }
+
+.grid-on {
+	border: 1px solid black;
+}
+
+.grid-off {
+	border: none;
+}
