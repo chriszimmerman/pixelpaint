@@ -2,8 +2,25 @@ var tableWidth;
 var tableHeight;
 
 $(document).ready(function(){
-    tableWidth = 10;
-    tableHeight = 10;
+	function initialize(){
+		tableWidth = 10;
+		tableHeight = 10;
+
+		$('#width').val(tableWidth);
+		$('#height').val(tableHeight);
+
+		$('#update').click(function(){
+			$('#canvas').empty();
+			createTable();
+		});
+
+		$('#grid').click(function(){
+			$('table td').toggleClass('grid-on');
+			$('table td').toggleClass('grid-off');
+		});
+		
+		createTable();
+	}
 
 	function createTable(){
 		tableWidth = $('#width').val();
@@ -15,7 +32,7 @@ $(document).ready(function(){
 			$('#canvas').append('<tr id="' + tableRowId + '"></tr>"');
 			
 			for(var j = 0; j < tableWidth; j++){
-				$('#' + tableRowId).append('<td><div class="square"></div></td>');            
+				$('#' + tableRowId).append('<td><div class="square"></div></td>');
 			}
 		}
 		$('table td').addClass('grid-off');
@@ -26,18 +43,5 @@ $(document).ready(function(){
 		});
 	}
 
-    $('#width').val(tableWidth);
-    $('#height').val(tableHeight);
-
-    $('#update').click(function(){
-		$('#canvas').empty();
-		createTable();
-	});
-
-	$('#grid').click(function(){
-		$('table td').toggleClass('grid-on');
-		$('table td').toggleClass('grid-off');
-	});
-
-	createTable();
+	initialize();
 });
