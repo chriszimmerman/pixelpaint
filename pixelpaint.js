@@ -32,7 +32,7 @@ $(document).ready(function(){
 			$('#canvas').append('<tr id="' + tableRowId + '"></tr>"');
 			
 			for(var j = 0; j < tableWidth; j++){
-				$('#' + tableRowId).append('<td><div class="square"></div></td>');
+				$('#' + tableRowId).append('<td><div class="square" style="background-color: rgb(255, 255, 255);"></div></td>');
 			}
 		}
 		$('table td').addClass('grid-off');
