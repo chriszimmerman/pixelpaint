@@ -43,15 +43,5 @@ $(document).ready(function(){
 		});
 	}
 
-	function foo(){
-		var pixel = '\xff\x00\x00';
-		var src = 'data:image/bmp;base64,' + btoa(pixel);
-		var img = document.createElement('img');
-		img.src = src;
-
-		$('body').append(img);
-	};
-
 	initialize();
-	foo();
 });
