@@ -32,7 +32,7 @@ $(document).ready(function(){
 			$('#canvas').append('<tr id="' + tableRowId + '"></tr>"');
 			
 			for(var j = 0; j < tableWidth; j++){
-				$('#' + tableRowId).append('<td><div class="square"></div></td>');
+				$('#' + tableRowId).append('<td><div class="square" style="background-color: rgb(255, 255, 255);"></div></td>');
 			}
 		}
 		$('table td').addClass('grid-off');
@@ -44,4 +44,17 @@ $(document).ready(function(){
 	}
 
 	initialize();
+
+	function getCssValues(){
+		var colors = [];
+		var stuff = $('.square').get();
+		for(var i = 0; i < tableHeight; i++){
+			colors.push([]);
+			for(var j = 0; j < tableWidth; j++){
+				var bgcolor = $(stuff[i * 10 + j]).css('background-color');
+				colors[i].push(bgcolor);
+			}
+		}
+		return colors;
+	}
 });
