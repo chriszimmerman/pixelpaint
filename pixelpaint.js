@@ -44,4 +44,17 @@ $(document).ready(function(){
 	}
 
 	initialize();
+
+	function getCssValues(){
+		var colors = [];
+		var stuff = $('.square').get();
+		for(var i = 0; i < tableHeight; i++){
+			colors.push([]);
+			for(var j = 0; j < tableWidth; j++){
+				var bgcolor = $(stuff[i * 10 + j]).css('background-color');
+				colors[i].push(bgcolor);
+			}
+		}
+		return colors;
+	}
 });
