@@ -21,7 +21,7 @@ $(document).ready(function(){
 		});
 
 		$('#export').click(function(){
-			pixelData = getCssValues();			
+			$('#imageContainer').attr('src', createImageFromCanvas());
 		});
 		
 		createTable();
@@ -50,26 +50,51 @@ $(document).ready(function(){
 
 	initialize();
 
-	function getCssValues(){
-		var rgbValues = [];
-		var rgbNumberPattern = /[0-9]+, [0-9]+, [0-9]+/g;
-		var pixels = $('.square').get();
-
-		for(var row = 0; row < tableHeight; row++){
-			rgbValues.push([]);
-			for(var column = 0; column < tableWidth; column++){
-				var backgroundColor = $(pixels[row * 10 + column]).css('background-color');
-				var rgbValue = backgroundColor.match(rgbNumberPattern);
-				rgbValue = rgbValue[0].split(", ");
-				rgbValue[0] = Number(rgbValue[0]);
-				rgbValue[1] = Number(rgbValue[1]);
-				rgbValue[2] = Number(rgbValue[2]);
-				rgbValues[row].push(rgbValue);
-			}
-		}
-		return rgbValues;
-	}
 });
+
+function getCssValues(){
+	var rgbValues = [];
+	var rgbNumberPattern = /[0-9]+, [0-9]+, [0-9]+/g;
+	var pixels = $('.square').get();
+
+	for(var row = 0; row < tableHeight; row++){
+		rgbValues.push([]);
+		for(var column = 0; column < tableWidth; column++){
+			var backgroundColor = $(pixels[row * 10 + column]).css('background-color');
+			var rgbValue = backgroundColor.match(rgbNumberPattern);
+			rgbValue = rgbValue[0].split(", ");
+			rgbValue[0] = Number(rgbValue[0]);
+			rgbValue[1] = Number(rgbValue[1]);
+			rgbValue[2] = Number(rgbValue[2]);
+			rgbValues[row].push(rgbValue);
+		}
+	}
+	return rgbValues;
+}
+
+function createImageFromCanvas(){
+	var canvasImage = new image(tableWidth, tableHeight);
+	setImageHeader(canvasImage);
+	var pixelColorData = getCssValues(); 
+	for(var row = 0; row < canvasImage.height; row++){
+		for(var column = 0; column < canvasImage.width; column++){
+			var pixel = pixelColorData[row][column];
+			var color = String.fromCharCode(pixel[2], pixel[1], pixel[0], 0);
+			canvasImage.data[row * canvasImage.width + column] = color;
+		}
+	}
+
+  flipImage(canvasImage);
+   
+  // If window.btoa is supported, use it since it's often faster
+  if(window.btoa != undefined) {
+    return 'data:image/bmp;base64,' + btoa(canvasImage.header + canvasImage.data.join(""));
+  }
+  // If not, use our base64 library
+  else {
+    return 'data:image/bmp;base64,' + $.base64.encode(canvasImage.header + canvasImage.data.join(""));
+  }
+}
 
 function image(w, h) {
   this.header = '';
@@ -115,14 +140,6 @@ function setImageHeader(img)
     '\x00\x00\x00\x00';       // 0 important colors (means all colors are important)
 }
 
-function fillRectangle(img, x, y, w, h, color) {
-  for (var ny = y; ny < y + h; ny++) {
-    for (var nx = x; nx < x + w; nx++) {
-      img.data[ny * img.width + nx] = color;
-    }
-  }
-}
-
 function flipImage(img) {
   var newImgData = new Array();
    
@@ -135,31 +152,3 @@ function flipImage(img) {
    
   img.data = newImgData;
 }
-
-function drawImage() {
-  var img = new image(210, 210);
-   
-  setImageHeader(img);
-   
-  fillRectangle(img, 0, 0, img.width, img.height, String.fromCharCode(255, 255, 255, 0));
-   
-  fillRectangle(img, 10, 10, 90, 90, String.fromCharCode(255, 0, 0, 0)); // Blue
-  fillRectangle(img, 110, 10, 90, 90, String.fromCharCode(0, 255, 0, 0)); // Green
-  fillRectangle(img, 10, 110, 90, 90, String.fromCharCode(0, 0, 255, 0)); // Red
-   
-  // Flip image vertically  
-  flipImage(img);
-   
-  // If window.btoa is supported, use it since it's often faster
-  if(window.btoa != undefined) {
-    return 'data:image/bmp;base64,' + btoa(img.header + img.data.join(""));
-  }
-  // If not, use our base64 library
-  else {
-    return 'data:image/bmp;base64,' + $.base64.encode(img.header + img.data.join(""));
-  }
-}
-
-$(document).ready(function() {
-  $('#imageContainer').attr('src', drawImage());
-});
