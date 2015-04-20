@@ -52,7 +52,66 @@ $(document).ready(function(){
 
 });
 
-function getCssValues(){
+function image(width, height) {
+  this.header = '';
+  this.data = Array();
+  this.width = width;
+  this.height = height;
+}
+
+function createImageFromCanvas(){
+	var canvasImage = new image(tableWidth, tableHeight);
+	setImageHeader(canvasImage);
+
+	var pixelColorData = getPixelRgbData();
+
+	for(var row = 0; row < canvasImage.height; row++){
+		for(var column = 0; column < canvasImage.width; column++){
+			var pixel = pixelColorData[row][column];
+			var redValue = pixel[0];
+			var greenValue = pixel[1];
+			var blueValue = pixel[2];
+
+			var color = String.fromCharCode(blueValue, greenValue, redValue, 0);
+			canvasImage.data[row * canvasImage.width + column] = color;
+		}
+	}
+
+  flipImage(canvasImage);
+
+  var encodingPrefix = 'data:image/bmp;base64,';
+  var unencodedImageString = canvasImage.header + canvasImage.data.join("");
+  var supportsBtoa = window.btoa != undefined;
+   
+  return supportsBtoa ? encodingPrefix + btoa(unencodedImageString) : encodingPrefix + $.base64.encode(unencodedImageString);
+}
+
+function setImageHeader(img)
+{
+  var bytesInFile = getLittleEndianHex(img.width * img.height);
+  var bitmapWidth = getLittleEndianHex(img.width);
+  var bitmapHeight = getLittleEndianHex(img.height);
+         
+  img.header = 
+    'BM' +                    // Signature
+    bytesInFile +             // size of the file (bytes)*
+    '\x00\x00' +              // reserved
+    '\x00\x00' +              // reserved
+    '\x36\x00\x00\x00' +      // offset of where BMP data lives (54 bytes)
+    '\x28\x00\x00\x00' +      // number of remaining bytes in header from here (40 bytes)
+	bitmapWidth +             // the width of the bitmap in pixels*
+    bitmapHeight +            // the height of the bitmap in pixels*
+    '\x01\x00' +              // the number of color planes (1)
+    '\x20\x00' +              // 32 bits / pixel
+    '\x00\x00\x00\x00' +      // No compression (0)
+    '\x00\x00\x00\x00' +      // size of the BMP data (bytes)*
+    '\x13\x0B\x00\x00' +      // 2835 pixels/meter - horizontal resolution
+    '\x13\x0B\x00\x00' +      // 2835 pixels/meter - the vertical resolution
+    '\x00\x00\x00\x00' +      // Number of colors in the palette (keep 0 for 32-bit)
+    '\x00\x00\x00\x00';       // 0 important colors (means all colors are important)
+}
+
+function getPixelRgbData(){
 	var rgbValues = [];
 	var rgbNumberPattern = /[0-9]+, [0-9]+, [0-9]+/g;
 	var pixels = $('.square').get();
@@ -72,37 +131,6 @@ function getCssValues(){
 	return rgbValues;
 }
 
-function createImageFromCanvas(){
-	var canvasImage = new image(tableWidth, tableHeight);
-	setImageHeader(canvasImage);
-	var pixelColorData = getCssValues(); 
-	for(var row = 0; row < canvasImage.height; row++){
-		for(var column = 0; column < canvasImage.width; column++){
-			var pixel = pixelColorData[row][column];
-			var color = String.fromCharCode(pixel[2], pixel[1], pixel[0], 0);
-			canvasImage.data[row * canvasImage.width + column] = color;
-		}
-	}
-
-  flipImage(canvasImage);
-   
-  // If window.btoa is supported, use it since it's often faster
-  if(window.btoa != undefined) {
-    return 'data:image/bmp;base64,' + btoa(canvasImage.header + canvasImage.data.join(""));
-  }
-  // If not, use our base64 library
-  else {
-    return 'data:image/bmp;base64,' + $.base64.encode(canvasImage.header + canvasImage.data.join(""));
-  }
-}
-
-function image(w, h) {
-  this.header = '';
-  this.data = Array();
-  this.width = w;
-  this.height = h;
-}
-
 function getLittleEndianHex(value) {
   var result = [];
    
@@ -112,32 +140,6 @@ function getLittleEndianHex(value) {
   }
    
   return result.join('');
-}
-
-
-function setImageHeader(img)
-{
-  var numFileBytes = getLittleEndianHex(img.width * img.height);
-  var w = getLittleEndianHex(img.width);
-  var h = getLittleEndianHex(img.height);
-         
-  img.header = 
-    'BM' +                    // Signature
-    numFileBytes +            // size of the file (bytes)*
-    '\x00\x00' +              // reserved
-    '\x00\x00' +              // reserved
-    '\x36\x00\x00\x00' +      // offset of where BMP data lives (54 bytes)
-    '\x28\x00\x00\x00' +      // number of remaining bytes in header from here (40 bytes)
-    w +                       // the width of the bitmap in pixels*
-    h +                       // the height of the bitmap in pixels*
-    '\x01\x00' +              // the number of color planes (1)
-    '\x20\x00' +              // 32 bits / pixel
-    '\x00\x00\x00\x00' +      // No compression (0)
-    '\x00\x00\x00\x00' +      // size of the BMP data (bytes)*
-    '\x13\x0B\x00\x00' +      // 2835 pixels/meter - horizontal resolution
-    '\x13\x0B\x00\x00' +      // 2835 pixels/meter - the vertical resolution
-    '\x00\x00\x00\x00' +      // Number of colors in the palette (keep 0 for 32-bit)
-    '\x00\x00\x00\x00';       // 0 important colors (means all colors are important)
 }
 
 function flipImage(img) {
