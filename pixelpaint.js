@@ -60,7 +60,7 @@ function getCssValues(){
 	for(var row = 0; row < tableHeight; row++){
 		rgbValues.push([]);
 		for(var column = 0; column < tableWidth; column++){
-			var backgroundColor = $(pixels[row * 10 + column]).css('background-color');
+			var backgroundColor = $(pixels[row * tableWidth + column]).css('background-color');
 			var rgbValue = backgroundColor.match(rgbNumberPattern);
 			rgbValue = rgbValue[0].split(", ");
 			rgbValue[0] = Number(rgbValue[0]);
