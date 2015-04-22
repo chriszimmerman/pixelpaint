@@ -63,6 +63,8 @@ $(document).ready(function(){
 				$(this).css('backgroundColor', color);
 			}
 		});
+
+		$('#canvas').on('dragstart', function(event) { event.preventDefault(); });
 	}
 
 	initialize();
