@@ -3,6 +3,8 @@ var tableHeight;
 var pixelData;
 
 $(document).ready(function(){
+	var isDown = false;
+
 	function initialize(){
 		tableWidth = 10;
 		tableHeight = 10;
@@ -23,6 +25,13 @@ $(document).ready(function(){
 		$('#export').click(function(){
 			$('#imageContainer').attr('src', createImageFromCanvas());
 		});
+
+		$(document).mousedown(function() {
+			isDown = true;
+		})
+		.mouseup(function() {
+			isDown = false;
+		});
 		
 		createTable();
 	}
@@ -40,16 +49,23 @@ $(document).ready(function(){
 				$('#' + tableRowId).append('<td><div class="square" style="background-color: rgb(255, 255, 255);"></div></td>');
 			}
 		}
+
 		$('table td').addClass('grid-off');
 		
 		$('.square').click(function(){
 			var color = $('#colorpicker').val();
 			$(this).css('backgroundColor', color);
 		});
+
+		$(".square").mouseover(function(){
+			if(isDown) {
+				var color = $('#colorpicker').val();
+				$(this).css('backgroundColor', color);
+			}
+		});
 	}
 
 	initialize();
-
 });
 
 function image(width, height) {
