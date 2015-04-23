@@ -160,15 +160,15 @@ function getLittleEndianHex(value) {
   return result.join('');
 }
 
-function flipImage(img) {
-  var newImgData = new Array();
+function flipImage(image) {
+  var flippedImageData = new Array();
    
-  for(var x = 0; x < img.width; x++) {
-    for(var y = 0; y < img.height; y ++) {
-      var ny = img.height - 1 - y;
-      newImgData[(ny * img.width) + x] = img.data[(y * img.width) + x];
+  for(var x = 0; x < image.width; x++) {
+    for(var y = 0; y < image.height; y++) {
+      var ny = image.height - 1 - y;
+      flippedImageData[(ny * image.width) + x] = image.data[(y * image.width) + x];
     }
   }
    
-  img.data = newImgData;
+  image.data = flippedImageData;
 }
