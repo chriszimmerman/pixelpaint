@@ -106,27 +106,38 @@ function createImageFromCanvas(){
 
 function setImageHeader(img)
 {
-  var bytesInFile = getLittleEndianHex(img.width * img.height);
-  var bitmapWidth = getLittleEndianHex(img.width);
-  var bitmapHeight = getLittleEndianHex(img.height);
-         
-  img.header = 
-    'BM' +                    // Signature
-    bytesInFile +             // size of the file (bytes)*
-    '\x00\x00' +              // reserved
-    '\x00\x00' +              // reserved
-    '\x36\x00\x00\x00' +      // offset of where BMP data lives (54 bytes)
-    '\x28\x00\x00\x00' +      // number of remaining bytes in header from here (40 bytes)
-	bitmapWidth +             // the width of the bitmap in pixels*
-    bitmapHeight +            // the height of the bitmap in pixels*
-    '\x01\x00' +              // the number of color planes (1)
-    '\x20\x00' +              // 32 bits / pixel
-    '\x00\x00\x00\x00' +      // No compression (0)
-    '\x00\x00\x00\x00' +      // size of the BMP data (bytes)*
-    '\x13\x0B\x00\x00' +      // 2835 pixels/meter - horizontal resolution
-    '\x13\x0B\x00\x00' +      // 2835 pixels/meter - the vertical resolution
-    '\x00\x00\x00\x00' +      // Number of colors in the palette (keep 0 for 32-bit)
-    '\x00\x00\x00\x00';       // 0 important colors (means all colors are important)
+	var bytesInFile = getLittleEndianHex(img.width * img.height);
+	var reservedBytes = '\x00\x00';
+	var bmpDataOffset = '\x36\x00\x00\x00';
+	var bytesLeftInHeader = '\x28\x00\x00\x00';
+	var bitmapWidth = getLittleEndianHex(img.width);
+	var bitmapHeight = getLittleEndianHex(img.height);
+	var numberOfColorPlanes = '\x01\x00';
+	var bitsPerPixel = '\x20\x00';
+	var compression = '\x00\x00\x00\x00';
+	var bmpDataByteSize = '\x00\x00\x00\x00';
+	var horizontalResolution = '\x13\x0B\x00\x00';
+	var verticalResolution = '\x13\x0B\x00\x00';
+	var colorsInPalette = '\x00\x00\x00\x00';
+	var importantColors = '\x00\x00\x00\x00';
+
+	img.header = 
+		'BM' +
+		bytesInFile +
+		reservedBytes +
+		reservedBytes +
+		bmpDataOffset +
+		bytesLeftInHeader +
+		bitmapWidth +
+		bitmapHeight +
+		numberOfColorPlanes +
+		bitsPerPixel +
+		compression +
+		bmpDataByteSize +
+		horizontalResolution +
+		verticalResolution +
+		colorsInPalette +
+		importantColors;
 }
 
 function getPixelRgbData(){
