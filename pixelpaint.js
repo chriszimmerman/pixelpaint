@@ -52,7 +52,7 @@ $(document).ready(function(){
 
 		$('table td').addClass('grid-off');
 		
-		$('.square').click(function(){
+		$('.square').mousedown(function(){
 			var color = $('#colorpicker').val();
 			$(this).css('backgroundColor', color);
 		});
