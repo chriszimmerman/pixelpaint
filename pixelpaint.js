@@ -23,7 +23,16 @@ $(document).ready(function(){
 		});
 
 		$('#export').click(function(){
-			$('#imageContainer').attr('src', createImageFromCanvas());
+			var image = createImageFromCanvas();
+
+			var temporaryLink = $("<a>")
+								.attr("href", image)
+								.attr("download", "image.bmp")
+								.appendTo("body");
+
+			temporaryLink[0].click();
+
+			temporaryLink.remove();
 		});
 
 		$(document).mousedown(function() {
