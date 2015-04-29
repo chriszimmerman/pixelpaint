@@ -23,16 +23,7 @@ $(document).ready(function(){
 		});
 
 		$('#export').click(function(){
-			var image = createImageFromCanvas();
-
-			var temporaryLink = $("<a>")
-								.attr("href", image)
-								.attr("download", "image.bmp")
-								.appendTo("body");
-
-			temporaryLink[0].click();
-
-			temporaryLink.remove();
+			exportImage();
 		});
 
 		$(document).mousedown(function() {
@@ -43,6 +34,19 @@ $(document).ready(function(){
 		});
 		
 		createTable();
+	}
+
+	function exportImage(){
+		var image = createImageFromCanvas();
+
+		var temporaryLink = $("<a>")
+							.attr("href", image)
+							.attr("download", "image.bmp")
+							.appendTo("body");
+
+		temporaryLink[0].click();
+
+		temporaryLink.remove();
 	}
 
 	function createTable(){
