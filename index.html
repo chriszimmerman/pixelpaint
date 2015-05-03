@@ -6,19 +6,23 @@
 	<link rel="stylesheet" type="text/css" href="pixelpaint.css">
 </head>
 <body>
-	<table id="canvas" cellpadding="0" cellspacing="0"></table>
-	<div>
-		Color: <input id="colorpicker" type="color"></input>
-		<br>
-		Height: <input id="height" type="number" min="1"> pixels
-		<br>
-		Width: <input id="width" type="number" min="1"> pixels
-		<br>
-		<button id="update">Update</button>
-		<br>
-		<button id="grid">Turn grid on/off</button>
-		<br>
-		<button id="export">Export image</button>
+	<div id="container">
+		<div id="sidebar">
+			Color: <input id="colorpicker" type="color"></input>
+			<br>
+			Height: <input id="height" type="number" min="1"> pixels
+			<br>
+			Width: <input id="width" type="number" min="1"> pixels
+			<br>
+			<button id="update">Update</button>
+			<br>
+			<button id="grid">Turn grid on/off</button>
+			<br>
+			<button id="export">Export image</button>
+		</div>
+		<div id="canvasContainer">
+			<table id="canvas" cellpadding="0" cellspacing="0"></table>
+		</div>
 	</div>
 </body>
 </html>
