@@ -18,6 +18,7 @@ $(document).ready(function(){
 		});
 
 		$('#grid').click(function(){
+			$('#canvas').toggleClass('border-collapse');
 			$('table td').toggleClass('grid-on');
 			$('table td').toggleClass('grid-off');
 		});
